@@ -28,10 +28,10 @@ Execute the main entry point from the `src/` directory to run the evolutionary a
 
 ```bash
 # Run on CPU
-bend run src/Main.bend
+bend src/Main.bend
 
 # Run on GPU (if CUDA/Metal is configured in your environment)
-bend run -c src/Main.bend
+bend -c src/Main.bend
 ```
 
 ---
