@@ -1,35 +1,44 @@
 import Base
-import Types
-import Engine
+import ./Types.bend as Types
+import ./Engine.bend as Engine
 
 # Constrói uma população inicial de árvores simples
-def init_population() -> List<Types.Expr>:
-  p0 = Types.Expr/Add { left: Types.Expr/Var, right: Types.Expr/Val { val: 1.0 } }
-  p1 = Types.Expr/Mul { left: Types.Expr/Var, right: Types.Expr/Var }
-  p2 = Types.Expr/Sin { arg: Types.Expr/Var }
-  p3 = Types.Expr/Val { val: 2.0 }
-  List/Cons { head: p0, tail: List/Cons { head: p1, tail: List/Cons { head: p2, tail: List/Cons { head: p3, tail: List/Nil } } } }
-
-def main() -> IO(Unit):
-  do IO<Unit>:
-    # Conjunto de dados de treino: y = x^2 + 1 para x em [0, 1, 2, 3]
-    dataset = List/Cons { 
-      head: (0.0, 1.0), 
-      tail: List/Cons { 
-        head: (1.0, 2.0), 
-        tail: List/Cons { 
-          head: (2.0, 5.0), 
-          tail: List/Cons { 
-            head: (3.0, 10.0), 
-            tail: List/Nil 
-          } 
+def init_population() -> +List<Types.Expr>:
+  Con{ 
+    Types.Add{Types.Var{}, Types.Val{1.0}}, 
+    Con{ 
+      Types.Mul{Types.Var{}, Types.Var{}}, 
+      Con{ 
+        Types.Sin{Types.Var{}}, 
+        Con{ 
+          Types.Val{2.0}, 
+          Nil{} 
         } 
       } 
-    }
-    
-    initial_pop = init_population()
-    
+    } 
+  }
+
+# Constrói o dataset de treino
+def make_dataset() -> +List<Types.Point>:
+  Con{ 
+    Types.Pt{0.0, 1.0}, 
+    Con{ 
+      Types.Pt{1.0, 2.0}, 
+      Con{ 
+        Types.Pt{2.0, 5.0}, 
+        Con{ 
+          Types.Pt{3.0, 10.0}, 
+          Nil{} 
+        } 
+      } 
+    } 
+  }
+
+def run_evolution(+dataset: +List<Types.Point>, +initial_pop: +List<Types.Expr>) -> IO(Unit):
+  do IO<Unit>:
     # Executa 10 gerações paralelas para 4 indivíduos
-    _results = Engine.evolve!(initial_pop, dataset, 4u, 10n, 42u)
-    
+    _results = Engine.evolve!(10n, initial_pop, dataset, 4, 42)
     IO.print("Regressao Simbolica executada com sucesso.")
+
+def main() -> IO(Unit):
+  run_evolution(make_dataset(), init_population())
