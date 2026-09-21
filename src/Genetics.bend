@@ -1,88 +1,125 @@
 import Base
-import Types
+import ./Types.bend as Types
+
+def choose_expr(is_even: Bool, e1: Types.Expr, e2: Types.Expr) -> Types.Expr:
+  match is_even:
+    case True{}: e1
+    case False{}: e2
+
+def replace_branch_add(is_even: Bool, left: Types.Expr, right: Types.Expr, +new_child: Types.Expr) -> Types.Expr:
+  match is_even:
+    case True{}: Types.Add{new_child, right}
+    case False{}: Types.Add{left, new_child}
+
+def replace_branch_mul(is_even: Bool, left: Types.Expr, right: Types.Expr, +new_child: Types.Expr) -> Types.Expr:
+  match is_even:
+    case True{}: Types.Mul{new_child, right}
+    case False{}: Types.Mul{left, new_child}
+
+def replace_branch_div(is_even: Bool, num: Types.Expr, den: Types.Expr, +new_child: Types.Expr) -> Types.Expr:
+  match is_even:
+    case True{}: Types.Div{new_child, den}
+    case False{}: Types.Div{num, new_child}
+
+def mutate_var_help(is_even: Bool, +rng: U32) -> Types.Expr:
+  match is_even:
+    case True{}: Types.Val{U32.to_f32(U32.mod(rng, 10))}
+    case False{}: Types.Var{}
 
 # Mutação de nós da árvore
-def mutate(expr: Types.Expr, rng: U32) -> Types.Expr:
+def mutate(expr: Types.Expr, +rng: U32) -> Types.Expr:
   match expr:
-    case Types.Expr/Val:
-      delta = (F32.to_f32(rng % 21u) - 10.0) / 10.0
-      Types.Expr/Val { val: expr.val + delta }
-    case Types.Expr/Var:
-      match (rng % 2u == 0u):
-        case True: Types.Expr/Val { val: F32.to_f32(rng % 10u) }
-        case False: Types.Expr/Var
-    case Types.Expr/Add:
-      match (rng % 3u):
-        case 0u: Types.Expr/Mul { left: expr.left, right: expr.right }
-        case 1u: Types.Expr/Add { left: mutate(expr.left, rng / 3u), right: expr.right }
-        case 2u: Types.Expr/Add { left: expr.left, right: mutate(expr.right, rng / 3u) }
-    case Types.Expr/Mul:
-      match (rng % 3u):
-        case 0u: Types.Expr/Add { left: expr.left, right: expr.right }
-        case 1u: Types.Expr/Mul { left: mutate(expr.left, rng / 3u), right: expr.right }
-        case 2u: Types.Expr/Mul { left: expr.left, right: mutate(expr.right, rng / 3u) }
-    case Types.Expr/Div:
-      match (rng % 2u == 0u):
-        case True: Types.Expr/Div { num: mutate(expr.num, rng / 2u), den: expr.den }
-        case False: Types.Expr/Div { num: expr.num, den: mutate(expr.den, rng / 2u) }
-    case Types.Expr/Sin:
-      match (rng % 2u == 0u):
-        case True: Types.Expr/Cos { arg: expr.arg }
-        case False: Types.Expr/Sin { arg: mutate(expr.arg, rng / 2u) }
-    case Types.Expr/Cos:
-      match (rng % 2u == 0u):
-        case True: Types.Expr/Sin { arg: expr.arg }
-        case False: Types.Expr/Cos { arg: mutate(expr.arg, rng / 2u) }
-    case Types.Expr/Exp:
-      Types.Expr/Exp { arg: mutate(expr.arg, rng / 2u) }
+    case Types.Val{val}:
+      +delta = F32.div(F32.sub(U32.to_f32(U32.mod(rng, 21)), 10.0), 10.0)
+      Types.Val{F32.add(val, delta)}
+    case Types.Var{}:
+      mutate_var_help(U32.is_eq(U32.mod(rng, 2), 0), rng)
+    case Types.Add{left, right}:
+      Types.Add{mutate(left, U32.div(rng, 3)), right}
+    case Types.Mul{left, right}:
+      Types.Mul{mutate(left, U32.div(rng, 3)), right}
+    case Types.Div{num, den}:
+      Types.Div{mutate(num, U32.div(rng, 2)), den}
+    case Types.Sin{arg}:
+      Types.Sin{mutate(arg, U32.div(rng, 2))}
+    case Types.Cos{arg}:
+      Types.Cos{mutate(arg, U32.div(rng, 2))}
+    case Types.Exp{arg}:
+      Types.Exp{mutate(arg, U32.div(rng, 2))}
+
+@unsafe
+def get_subtree_step(+path: U32, is_zero: Bool, expr: Types.Expr) -> Types.Expr:
+  match is_zero:
+    case True{}: expr
+    case False{}:
+      match expr:
+        case Types.Val{val}: Types.Val{val}
+        case Types.Var{}: Types.Var{}
+        case Types.Add{left, right}:
+          child = choose_expr(U32.is_eq(U32.mod(path, 2), 0), left, right)
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), child)
+        case Types.Mul{left, right}:
+          child = choose_expr(U32.is_eq(U32.mod(path, 2), 0), left, right)
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), child)
+        case Types.Div{num, den}:
+          child = choose_expr(U32.is_eq(U32.mod(path, 2), 0), num, den)
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), child)
+        case Types.Sin{arg}:
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), arg)
+        case Types.Cos{arg}:
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), arg)
+        case Types.Exp{arg}:
+          +next_p = U32.div(path, 2)
+          get_subtree_step(next_p, U32.is_eq(next_p, 0), arg)
 
 # Extração de subárvore navegando por um caminho de bits
-def get_subtree(expr: Types.Expr, path: U32) -> Types.Expr:
-  match path:
-    case 0u: expr
-    case +p:
-      match expr:
-        case Types.Expr/Val: expr
-        case Types.Expr/Var: expr
-        case Types.Expr/Add:
-          match (p % 2u == 0u):
-            case True: get_subtree(expr.left, p / 2u)
-            case False: get_subtree(expr.right, p / 2u)
-        case Types.Expr/Mul:
-          match (p % 2u == 0u):
-            case True: get_subtree(expr.left, p / 2u)
-            case False: get_subtree(expr.right, p / 2u)
-        case Types.Expr/Div:
-          match (p % 2u == 0u):
-            case True: get_subtree(expr.num, p / 2u)
-            case False: get_subtree(expr.den, p / 2u)
-        case Types.Expr/Sin: get_subtree(expr.arg, p / 2u)
-        case Types.Expr/Cos: get_subtree(expr.arg, p / 2u)
-        case Types.Expr/Exp: get_subtree(expr.arg, p / 2u)
+def get_subtree(expr: Types.Expr, +path: U32) -> Types.Expr:
+  get_subtree_step(path, U32.is_eq(path, 0), expr)
+
+@unsafe
+def replace_subtree_step(+path: U32, is_zero: Bool, target: Types.Expr, +replacement: Types.Expr) -> Types.Expr:
+  match is_zero:
+    case True{}: replacement
+    case False{}:
+      match target:
+        case Types.Val{val}: replacement
+        case Types.Var{}: replacement
+        case Types.Add{+left, +right}:
+          +is_even = U32.is_eq(U32.mod(path, 2), 0)
+          child = choose_expr(is_even, left, right)
+          +next_p = U32.div(path, 2)
+          new_child = replace_subtree_step(next_p, U32.is_eq(next_p, 0), child, replacement)
+          replace_branch_add(is_even, left, right, new_child)
+        case Types.Mul{+left, +right}:
+          +is_even = U32.is_eq(U32.mod(path, 2), 0)
+          child = choose_expr(is_even, left, right)
+          +next_p = U32.div(path, 2)
+          new_child = replace_subtree_step(next_p, U32.is_eq(next_p, 0), child, replacement)
+          replace_branch_mul(is_even, left, right, new_child)
+        case Types.Div{+num, +den}:
+          +is_even = U32.is_eq(U32.mod(path, 2), 0)
+          child = choose_expr(is_even, num, den)
+          +next_p = U32.div(path, 2)
+          new_child = replace_subtree_step(next_p, U32.is_eq(next_p, 0), child, replacement)
+          replace_branch_div(is_even, num, den, new_child)
+        case Types.Sin{arg}:
+          +next_p = U32.div(path, 2)
+          Types.Sin{replace_subtree_step(next_p, U32.is_eq(next_p, 0), arg, replacement)}
+        case Types.Cos{arg}:
+          +next_p = U32.div(path, 2)
+          Types.Cos{replace_subtree_step(next_p, U32.is_eq(next_p, 0), arg, replacement)}
+        case Types.Exp{arg}:
+          +next_p = U32.div(path, 2)
+          Types.Exp{replace_subtree_step(next_p, U32.is_eq(next_p, 0), arg, replacement)}
 
 # Substituição de subárvore
-def replace_subtree(target: Types.Expr, replacement: Types.Expr, path: U32) -> Types.Expr:
-  match path:
-    case 0u: replacement
-    case +p:
-      match target:
-        case Types.Expr/Val: replacement
-        case Types.Expr/Var: replacement
-        case Types.Expr/Add:
-          match (p % 2u == 0u):
-            case True: Types.Expr/Add { left: replace_subtree(target.left, replacement, p / 2u), right: target.right }
-            case False: Types.Expr/Add { left: target.left, right: replace_subtree(target.right, replacement, p / 2u) }
-        case Types.Expr/Mul:
-          match (p % 2u == 0u):
-            case True: Types.Expr/Mul { left: replace_subtree(target.left, replacement, p / 2u), right: target.right }
-            case False: Types.Expr/Mul { left: target.left, right: replace_subtree(target.right, replacement, p / 2u) }
-        case Types.Expr/Div:
-          match (p % 2u == 0u):
-            case True: Types.Expr/Div { num: replace_subtree(target.num, replacement, p / 2u), den: target.den }
-            case False: Types.Expr/Div { num: target.num, den: replace_subtree(target.den, replacement, p / 2u) }
-        case Types.Expr/Sin: Types.Expr/Sin { arg: replace_subtree(target.arg, replacement, p / 2u) }
-        case Types.Expr/Cos: Types.Expr/Cos { arg: replace_subtree(target.arg, replacement, p / 2u) }
-        case Types.Expr/Exp: Types.Expr/Exp { arg: replace_subtree(target.arg, replacement, p / 2u) }
+def replace_subtree(target: Types.Expr, +replacement: Types.Expr, +path: U32) -> Types.Expr:
+  replace_subtree_step(path, U32.is_eq(path, 0), target, replacement)
 
 # Operador de cruzamento de subárvores
 def crossover(p1: Types.Expr, p2: Types.Expr, path1: U32, path2: U32) -> Types.Expr:
