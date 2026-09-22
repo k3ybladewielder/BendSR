@@ -24,29 +24,33 @@ $$f(x_1, x_2, x_3) = \sin(x_1) + \frac{x_2}{x_3}$$
 - **Complex Model Reduction**: Transforming computationally heavy numerical simulations into high-precision analytical approximations for real-time execution:
 $$E(v) = 0.5 \cdot v^2$$
 
-### 2. Engineering & Control Systems ([`control_systems/`](./control_systems/README.md))
+### 2. Multivariable Surface Discovery ([`multivariable_feynman/`](./multivariable_feynman/README.md))
+- **Extraction of Multi-Feature Interactions**: Deductions over multi-dimensional feature spaces ($x_0, x_1, x_2, \dots$) identifying non-linear cross-variable interactions:
+$$f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$$
+
+### 3. Engineering & Control Systems ([`control_systems/`](./control_systems/README.md))
 - **Analytical Control Laws for Edge Devices**: Generating closed-loop control functions without requiring neural network inference on resource-constrained hardware:
 $$u(x) = \sin(x) + 0.5 \cdot x$$
 - **Constitutive Material Laws**: Describing stress-strain behavior and fatigue of novel composite materials under varying temperatures $T$ and pressures $P$:
 $$\sigma(\epsilon) = E \cdot \epsilon$$
 
-### 3. Quantitative Finance & Econometrics ([`financial_factors/`](./financial_factors/README.md))
+### 4. Quantitative Finance & Econometrics ([`financial_factors/`](./financial_factors/README.md))
 - **Construction of Financial Factors & Indicators**: Automatically discovering new interpretable *alpha* factors for trading strategies and asset pricing:
 $$\alpha(x) = x \cdot \cos(x)$$
 - **Risk Modeling & Volatility Surfaces**: Identifying analytical relationships for fitting volatility surfaces and synthetic risk assessment:
 $$\sigma(K, T) = \sigma_0 + \alpha \cdot K$$
 
-### 4. Computational Biology & Systems Medicine
+### 5. Computational Biology & Systems Medicine
 - **Enzyme Kinetics & Gene Regulatory Networks**: Inferring ordinary differential equations (ODEs) and reaction rates from gene expression data:
 $$v(S) = \frac{V_{\max} \cdot S}{K_m + S}$$
 - **Pharmacokinetics & Pharmacodynamics (PK/PD)**: Modeling drug absorption and elimination rates in biological tissues:
 $$C(t) = C_0 \cdot e^{-k \cdot t}$$
 
-### 5. Computational Chemistry & Materials Science
+### 6. Computational Chemistry & Materials Science
 - **Molecular Property Prediction**: Mapping molecular descriptors $x$ to physical-chemical properties (pKa, solubility, melting point) in a scientist-interpretable manner:
 $$p(x) = a \cdot x + b$$
 
-### 6. Academic Synthetic Benchmarks ([`synthetic_benchmarks/`](./synthetic_benchmarks/README.md))
+### 7. Academic Synthetic Benchmarks ([`synthetic_benchmarks/`](./synthetic_benchmarks/README.md))
 - **Standard Symbolic Regression Test Suite (Nguyen-1)**: Validating convergence rates, exact formula recovery, and parallel execution speedup against classic benchmark targets:
 $$f(x) = x^3 + x^2 + x$$
 
@@ -76,6 +80,7 @@ The `BendSR/cases` directory hosts practical examples, reference datasets, and u
 BendSR/cases/
 ├── CASES.md                  # Overview document of application cases
 ├── physics_feynman/          # Physics-inspired benchmarks (classical physical equations)
+├── multivariable_feynman/    # 2D/3D multivariable surface recovery (x0, x1, ...)
 ├── control_systems/          # Control law extraction examples
 ├── financial_factors/        # Analytical financial factor discovery cases
 ├── synthetic_benchmarks/     # Standard test functions (Koza, Nguyen, Pagie, Korns)

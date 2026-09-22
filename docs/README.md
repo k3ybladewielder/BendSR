@@ -21,6 +21,7 @@ Symbolic Regression stands out by generating transparent mathematical expression
 The repository includes a comprehensive suite of real-world benchmarks and business applications located in the [`cases/`](../cases/CASES.md) directory:
 
 - **Physics & Discovery of Natural Laws** ([`cases/physics_feynman/`](../cases/physics_feynman/README.md)): Extracting governing physical laws (e.g., kinetic energy $E(v) = 0.5 \cdot v^2$).
+- **Multivariable Surface Discovery** ([`cases/multivariable_feynman/`](../cases/multivariable_feynman/README.md)): Recovering multi-feature 2D/3D interaction surfaces ($f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$).
 - **Embedded Control Systems** ([`cases/control_systems/`](../cases/control_systems/README.md)): Generating lightweight closed-loop control laws for real-time edge devices ($u(x) = \sin(x) + 0.5 \cdot x$).
 - **Quantitative Finance** ([`cases/financial_factors/`](../cases/financial_factors/README.md)): Discovering interpretable non-linear alpha factors ($\alpha(x) = x \cdot \cos(x)$).
 - **Academic Benchmarks** ([`cases/synthetic_benchmarks/`](../cases/synthetic_benchmarks/README.md)): Validating convergence against standard synthetic suites (Nguyen-1: $f(x) = x^3 + x^2 + x$).
@@ -70,14 +71,14 @@ Bend is a pure functional language compiled to HVM (Higher-order Virtual Machine
 Instead of manually hardcoding points into Bend code, use the automated dataset loader generator script (`tools/load_dataset.py`) via `uv`. It reads external `.csv`, `.xlsx`, or `.parquet` files and automatically outputs native Bend dataset AST structures.
 
 **Step 1: Convert your dataset file into Bend format using `uv`**
-Run the generator tool targeting your dataset file (specifying column indices if needed):
+Run the generator tool targeting your dataset file (specifying single or multi-variable columns):
 
 ```bash
-# Convert a CSV file
+# Convert a single-variable or multivariable CSV file
 uv run tools/load_dataset.py path/to/your_dataset.csv > src/Dataset.bend
 
 # Convert an XLSX or Parquet file (with automatic on-the-fly dependencies)
-uv run --with pandas --with openpyxl --with pyarrow tools/load_dataset.py path/to/your_dataset.xlsx 0 1 > src/Dataset.bend
+uv run --with polars tools/load_dataset.py path/to/your_dataset.xlsx > src/Dataset.bend
 ```
 
 **Step 2: Import the generated dataset in `src/Main.bend`**
@@ -114,6 +115,7 @@ To adjust evolutionary parameters in `src/Main.bend`:
 ├── cases/
 │   ├── CASES.md
 │   ├── physics_feynman/
+│   ├── multivariable_feynman/
 │   ├── control_systems/
 │   ├── financial_factors/
 │   ├── synthetic_benchmarks/
@@ -137,8 +139,8 @@ To adjust evolutionary parameters in `src/Main.bend`:
 ---
 
 ### Source File Details (`src/`)
- * `Types.bend`: Defines the foundational type system. Contains the recursive Abstract Syntax Tree (`Expr`) data structure encompassing terminals ($x$, constants) and non-linear operators (`Sin`, `Cos`, `Exp`), as well as the `Individual` representation.
- * `Eval.bend`: Implements the parallel tree evaluation engine (`eval`). Handles numerical guardrails (`safe_div`) and computes Mean Absolute Error ($MAE$) concurrently across GPU threads using the `!` operator.
+ * `Types.bend`: Defines the foundational type system. Contains the recursive Abstract Syntax Tree (`Expr`) data structure encompassing indexed variables (`Var{idx}`), terminals ($x_0, x_1, x_2$, constants) and non-linear operators (`Sin`, `Cos`, `Exp`), as well as single and multivariable `Point` representations (`Pt`, `Pt2`, `Pt3`).
+ * `Eval.bend`: Implements the parallel tree evaluation engine (`eval`) and variable lookup (`get_var`). Handles numerical guardrails (`safe_div`) and computes Mean Absolute Error ($MAE$) concurrently across GPU threads using the `!` operator.
  * `Genetics.bend`: Handles AST manipulation routines. Combines `mutate` and `crossover` functions using immutable bitwise navigation via pattern matching, avoiding memory leaks or race conditions.
  * `Engine.bend`: The core evolutionary pipeline. Manages tournament selection (`tournament`) and the recursive evaluation, breeding, and population replacement loop.
  * `LAWS.bend`: The Bend 2 specification file. Declares formal assertions and laws that the codebase must satisfy (e.g., tree evaluation must be deterministic and reflexive at compile-time).
@@ -156,7 +158,7 @@ If you use BendSR in your research or project, please cite it as follows:
   author       = {Guimar{\~a}es, Alysson},
   title        = {{BendSR: Symbolic Regression in Bend}},
   year         = {2026},
-  month        = {sep},
+  month        = {jun},
   howpublished = {\url{https://github.com/k3ybladewielder/BendSR}},
   note         = {GitHub repository}
 }

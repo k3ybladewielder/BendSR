@@ -2,12 +2,13 @@
 """
 BendSR Dataset Loader Generator
 Converts CSV, XLSX, or Parquet files into a native Bend dataset file (Dataset.bend) using Polars for high performance.
+Supports single-variable (Pt) and multivariable (Pt2, Pt3) feature datasets.
 """
 
 import sys
 import os
 
-def parse_file_polars(file_path: str, x_col_idx: int = 0, y_col_idx: int = 1):
+def parse_file_polars(file_path: str):
     ext = os.path.splitext(file_path)[1].lower()
     
     try:
@@ -21,48 +22,59 @@ def parse_file_polars(file_path: str, x_col_idx: int = 0, y_col_idx: int = 1):
         else:
             df = pl.read_csv(file_path)
 
-        x_name = df.columns[x_col_idx]
-        y_name = df.columns[y_col_idx]
-        
-        # Extract tuples using polars expressions
-        pts = list(zip(df[x_name].to_list(), df[y_name].to_list()))
-        return pts
+        cols = df.columns
+        num_cols = len(cols)
+        data_rows = df.to_numpy().tolist()
+        return num_cols, data_rows
     except ImportError:
-        # Fallback to standard library csv for CSV files
         if ext == '.csv':
             import csv
-            points = []
+            rows = []
             with open(file_path, 'r', encoding='utf-8') as f:
                 reader = csv.reader(f)
-                lines = [row for row in reader if row]
+                lines = [r for r in reader if r]
                 start_idx = 0
                 try:
-                    float(lines[0][x_col_idx])
+                    float(lines[0][0])
                 except (ValueError, IndexError):
                     start_idx = 1
                 
-                for row in lines[start_idx:]:
-                    if len(row) > max(x_col_idx, y_col_idx):
-                        try:
-                            points.append((float(row[x_col_idx]), float(row[y_col_idx])))
-                        except ValueError:
-                            continue
-            return points
+                for r in lines[start_idx:]:
+                    try:
+                        parsed = [float(val) for val in r]
+                        rows.append(parsed)
+                    except ValueError:
+                        continue
+            num_cols = len(rows[0]) if rows else 0
+            return num_cols, rows
         else:
             sys.stderr.write(f"Error: polars library is required to parse {ext} files. Run with `uv run --with polars`.\n")
             sys.exit(1)
 
-def generate_bend_code(points):
+def generate_bend_code(num_cols, rows):
     bend_code = "import ./Types.bend as Types\n\n"
-    bend_code += "# Automatically generated dataset loader\n"
+    bend_code += "# Automatically generated multivariable dataset loader\n"
     bend_code += "def load_dataset() -> +List<Types.Point>:\n"
     
     indent = "  "
-    for x_val, y_val in points:
-        bend_code += f"{indent}Con{{\n{indent}  Types.Pt{{{x_val}, {y_val}}},\n"
+    for row in rows:
+        if num_cols == 2:
+            # Single variable: Pt{x, y}
+            pt_str = f"Types.Pt{{{row[0]}, {row[1]}}}"
+        elif num_cols == 3:
+            # 2 variables: Pt2{x0, x1, y}
+            pt_str = f"Types.Pt2{{{row[0]}, {row[1]}, {row[2]}}}"
+        elif num_cols >= 4:
+            # 3 variables: Pt3{x0, x1, x2, y}
+            pt_str = f"Types.Pt3{{{row[0]}, {row[1]}, {row[2]}, {row[3]}}}"
+        else:
+            pt_str = f"Types.Pt{{{row[0]}, 0.0}}"
+
+        bend_code += f"{indent}Con{{\n{indent}  {pt_str},\n"
         indent += "  "
+
     bend_code += f"{indent}Nil{{}}\n"
-    for _ in range(len(points)):
+    for _ in range(len(rows)):
         indent = indent[:-2]
         bend_code += f"{indent}}}\n"
 
@@ -70,12 +82,9 @@ def generate_bend_code(points):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: uv run --with polars tools/load_dataset.py <file_path> [x_column_index] [y_column_index]")
+        print("Usage: uv run --with polars tools/load_dataset.py <file_path>")
         sys.exit(1)
     
     file_path = sys.argv[1]
-    x_idx = int(sys.argv[2]) if len(sys.argv) > 2 else 0
-    y_idx = int(sys.argv[3]) if len(sys.argv) > 3 else 1
-
-    pts = parse_file_polars(file_path, x_idx, y_idx)
-    print(generate_bend_code(pts))
+    num_cols, rows = parse_file_polars(file_path)
+    print(generate_bend_code(num_cols, rows))
