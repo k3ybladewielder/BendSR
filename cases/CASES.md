@@ -5,6 +5,9 @@
 Unlike black-box deep learning models, Symbolic Regression searches the space of Abstract Syntax Trees (ASTs) of mathematical expressions to find an optimal function:
 $$f(X) \approx y$$
 
+> [!NOTE]
+> **Synthetic Datasets Notice**: All case studies and datasets (`dataset.csv`) included in this directory are generated using **synthetic data** (dados sintéticos) specifically designed to test, validate, and benchmark **BendSR**'s symbolic regression discovery engine across single-variable and multivariable domains.
+
 ---
 
 ## Key Advantages of BendSR
