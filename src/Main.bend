@@ -21,13 +21,13 @@ def init_population() -> +List<Types.Expr>:
 # Constrói o dataset de treino
 def make_dataset() -> +List<Types.Point>:
   Con{ 
-    Types.Pt{0.0, 1.0}, 
+    Types.Pt{Con{0.0, Nil{}}, 1.0}, 
     Con{ 
-      Types.Pt{1.0, 2.0}, 
+      Types.Pt{Con{1.0, Nil{}}, 2.0}, 
       Con{ 
-        Types.Pt{2.0, 5.0}, 
+        Types.Pt{Con{2.0, Nil{}}, 5.0}, 
         Con{ 
-          Types.Pt{3.0, 10.0}, 
+          Types.Pt{Con{3.0, Nil{}}, 10.0}, 
           Nil{} 
         } 
       } 
