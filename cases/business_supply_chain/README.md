@@ -16,13 +16,14 @@ $$ROP(d) = 2.5 \cdot d + 5.0$$
 
 ---
 
-## Numerical Results & Logistics Optimization
+## Numerical Results & Metrics
 
-| Inventory Management Policy | Stockout Risk Probability | Safety Stock Level | Holding Cost Reduction |
-|---|---|---|---|
-| Fixed Reorder Point ($ROP = 20$) | $8.5\%$ | High (Suboptimal) | Baseline ($0\%$) |
-| Heuristic Safety Buffer | $3.2\%$ | Moderate | $-12.5\%$ |
-| **BendSR Exact Formula** | **$0.0\%$** | **Exact Safety Buffer ($5.0$ units)** | **$-31.4\%$** |
+| Metric | Obtained Value | Technical Significance |
+|---|---|---|
+| **Discovered Inventory Formula** | $ROP(d) = 2.5 \cdot d + 5.0$ | Closed-form reorder point model |
+| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on demand dataset |
+| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Interpretable linear AST structure |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 

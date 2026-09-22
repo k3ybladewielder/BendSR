@@ -16,13 +16,14 @@ $$\alpha(x) = x \cdot \cos(x)$$
 
 ---
 
-## Numerical Results & Comparison
+## Numerical Results & Metrics
 
-| Financial Factor | Information Coefficient ($IC$) | Annual Portfolio Turnover | Max Drawdown Risk |
-|---|---|---|---|
-| Traditional Linear Trend | $0.021$ | $420\%$ | $-18.4\%$ |
-| Polynomial Factor | $0.035$ | $310\%$ | $-14.2\%$ |
-| **BendSR Factor** | **$0.084$** | **$185\%$** | **$-6.8\%$** |
+| Metric | Obtained Value | Technical Significance |
+|---|---|---|
+| **Discovered Factor Formula** | $\alpha(x) = x \cdot \cos(x)$ | Non-linear alpha factor signal |
+| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on target return signal |
+| **Tree Complexity ($C$)** | $3\text{ AST nodes}$ | Compact financial factor expression |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
@@ -38,5 +39,5 @@ This equation dynamically toggles the trading strategy between **trend-following
 1. **Dynamic Market Adaptation**:
    - For moderate price gains ($x$ is small), the factor acts as a momentum buyer.
    - For overextended price spikes ($x$ is large), the cosine term automatically flips sign, signaling that the asset is overbought and prompting a profit-taking or short position.
-2. **Reduced Transaction Overhead**: Because the factor transitions smoothly between buy and sell signals, it eliminates unnecessary trading churn (reducing annual portfolio turnover from $420\%$ down to $185\%$), saving substantial brokerage fees and slippage costs.
+2. **Reduced Transaction Overhead**: Because the factor transitions smoothly between buy and sell signals, it eliminates unnecessary trading churn.
 3. **Risk Management Transparency**: Quantitative fund managers must explain algorithmic strategies to auditors and institutional investors. BendSR's explicit formula eliminates unexpected behavior during market volatility shocks.

@@ -14,13 +14,14 @@ $$f(x) = x^3 + x^2 + x$$
 
 ---
 
-## Numerical Results & Speedup
+## Numerical Results & Metrics
 
-| Execution Engine | Population Size | Time per Generation | Speedup Factor |
-|---|---|---|---|
-| Sequential C Interpreter | $1,024\text{ individuals}$ | $14.20\text{ ms}$ | $1.0\times$ |
-| OpenMP Parallelism (8 threads) | $1,024\text{ individuals}$ | $2.10\text{ ms}$ | $6.76\times$ |
-| **BendSR (Interaction Nets)** | **$1,024\text{ individuals}$** | **$0.35\text{ ms}$** | **$40.57\times$** |
+| Metric | Obtained Value | Technical Significance |
+|---|---|---|
+| **Discovered Polynomial** | $f(x) = x^3 + x^2 + x$ | Target Nguyen-1 benchmark recovery |
+| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error across evaluation grid |
+| **Tree Complexity ($C$)** | $7\text{ AST nodes}$ | Minimal polynomial expression AST |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
@@ -32,4 +33,4 @@ $$f(x) = x^3 + x^2 + x$$
 
 ### What does this mean in practice?
 1. **High-Performance Scientific Validation**: Proves that BendSR's evolutionary architecture reliably converges on complex polynomial targets without overfitting or getting trapped in bloat.
-2. **Massively Parallel Scalability**: Leveraging Bend's Interaction Net runtime, BendSR evaluates thousands of candidate expressions simultaneously without lock contention or thread synchronization overhead—achieving a **40x speedup** over traditional sequential execution engines.
+2. **Massively Parallel Scalability**: Leveraging Bend's Interaction Net runtime, BendSR evaluates thousands of candidate expressions simultaneously without lock contention or thread synchronization overhead.

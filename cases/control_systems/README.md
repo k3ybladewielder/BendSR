@@ -16,13 +16,14 @@ $$u(x) = \sin(x) + 0.5 \cdot x$$
 
 ---
 
-## Numerical Results & Performance
+## Numerical Results & Metrics
 
-| Controller Architecture | Response Latency (Microcontroller) | Memory Footprint | Safety Auditability |
-|---|---|---|---|
-| Deep Neural Network (MLP) | $120.0\,\mu\text{s}$ | $34.2\text{ KB}$ | None (Black-box) |
-| Lookup Table | $1.2\,\mu\text{s}$ | $8.0\text{ KB}$ | Moderate (Discontinuous) |
-| **BendSR Equation** | **$0.04\,\mu\text{s}$** | **$0.02\text{ KB}$** | **100% Exact & Verifiable** |
+| Metric | Obtained Value | Technical Significance |
+|---|---|---|
+| **Discovered Control Law** | $u(x) = \sin(x) + 0.5 \cdot x$ | Closed-form analytical control law |
+| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on actuator response dataset |
+| **Tree Complexity ($C$)** | $6\text{ AST nodes}$ | Lightweight expression for embedded control |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
@@ -33,6 +34,6 @@ BendSR identified an exact mathematical formula instructing a robot or motor on 
 $$u(x) = \sin(x) + 0.5 \cdot x$$
 
 ### What does this mean in practice?
-1. **Ultra-Fast Response & Energy Efficiency**: On edge devices (such as drones, robotic prosthetics, or industrial microcontrollers), running neural networks requires expensive hardware and consumes significant battery. BendSR's closed-form equation executes in under **0.04 microseconds**—over 3,000 times faster than a neural network.
-2. **Guaranteed Safety Verification**: In safety-critical applications (such as autonomous braking or surgical robotics), uninterpretable models pose unacceptable failure risks. An explicit mathematical formula can be formally verified and proven to guarantee that the robot never loses stability:
+1. **Ultra-Fast Response & Energy Efficiency**: On edge devices (such as drones, robotic prosthetics, or industrial microcontrollers), BendSR's closed-form equation provides a compact expression requiring minimal arithmetic operations.
+2. **Guaranteed Safety Verification**: In safety-critical applications (such as autonomous braking or surgical robotics), an explicit mathematical formula can be formally verified and proven to guarantee that the robot never loses stability:
 $$u(x) = \sin(x) + 0.5 \cdot x$$

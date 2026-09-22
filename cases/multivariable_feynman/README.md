@@ -23,7 +23,7 @@ $$f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$$
 | **Discovered Equation** | $f(x_0, x_1) = x_0 \cdot x_0 + 2.0 \cdot x_1$ | Exact mathematical recovery of 2D surface |
 | **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on evaluation test points |
 | **Tree Complexity ($C$)** | $7\text{ AST nodes}$ | Minimalist multivariable AST structure |
-| **Generations to Convergence** | $7\text{ generations}$ | Rapid convergence across multiple input dimensions |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
@@ -34,6 +34,6 @@ BendSR analyzed multivariable data points ($x_0, x_1, y$) and autonomously disco
 $$f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$$
 
 ### What does this mean in practice?
-1. **Multi-Dimensional Surface Extraction**: Real-world physical systems and engineering processes rarely depend on a single variable. BendSR scales to multivariate domains ($x_0, x_1, x_2, \dots$), discovering exact interaction effects between distinct physical parameters.
+1. **Multi-Dimensional Surface Extraction**: Real-world physical systems and engineering processes depend on multiple variables. BendSR scales to multivariate domains ($x_0, x_1, x_2, \dots$), discovering exact interaction effects between distinct physical parameters.
 2. **Lock-Free Parallel Feature Evaluation**: Using Bend's Interaction Net runtime, evaluating feature vectors across multivariable AST nodes occurs concurrently without GPU memory bottlenecks or thread contention.
-3. **Full Auditability Across Feature Dimensions**: Unlike black-box multi-layer perceptrons, BendSR outputs an explicit multi-feature formula, enabling closed-form mathematical analysis and safety verification.
+3. **Full Auditability Across Feature Dimensions**: BendSR outputs an explicit multi-feature formula, enabling closed-form mathematical analysis and safety verification.
