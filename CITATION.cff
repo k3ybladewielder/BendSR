@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Guimarães"
+    given-names: "Alysson"
+title: "BendSR: Symbolic Regression in Bend"
+version: 1.0.0
+date-released: 2026-06-01
+url: "https://github.com/k3ybladewielder/BendSR"
