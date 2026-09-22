@@ -51,8 +51,14 @@ def parse_file_polars(file_path: str):
             sys.stderr.write(f"Error: polars library is required to parse {ext} files. Run with `uv run --with polars`.\n")
             sys.exit(1)
 
+def format_val(val):
+    v = float(val)
+    if v < 0:
+        return f"F32.sub(0.0, {abs(v)})"
+    return str(val)
+
 def generate_bend_code(num_cols, rows):
-    bend_code = "import ./Types.bend as Types\n\n"
+    bend_code = "import ../../src/Types.bend as Types\n\n"
     bend_code += "# Automatically generated multivariable dataset loader\n"
     bend_code += "def load_dataset() -> +List<Types.Point>:\n"
     
@@ -67,9 +73,11 @@ def generate_bend_code(num_cols, rows):
             
         xs_str = "Types.FNil{}"
         for val in reversed(features):
-            xs_str = f"Types.FCon{{{val}, {xs_str}}}"
+            f_str = format_val(val)
+            xs_str = f"Types.FCon{{{f_str}, {xs_str}}}"
             
-        pt_str = "Types.Pt{" + xs_str + ", " + str(target) + "}"
+        target_str = format_val(target)
+        pt_str = "Types.Pt{" + xs_str + ", " + target_str + "}"
 
         bend_code += f"{indent}Con{{\n{indent}  {pt_str},\n"
         indent += "  "
