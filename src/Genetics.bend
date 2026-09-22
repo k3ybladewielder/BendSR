@@ -24,7 +24,7 @@ def replace_branch_div(is_even: Bool, num: Types.Expr, den: Types.Expr, +new_chi
 def mutate_var_help(is_even: Bool, +rng: U32) -> Types.Expr:
   match is_even:
     case True{}: Types.Val{U32.to_f32(U32.mod(rng, 10))}
-    case False{}: Types.Var{}
+    case False{}: Types.Var{U32.mod(rng, 3)}
 
 # Mutação de nós da árvore
 def mutate(expr: Types.Expr, +rng: U32) -> Types.Expr:
@@ -32,7 +32,7 @@ def mutate(expr: Types.Expr, +rng: U32) -> Types.Expr:
     case Types.Val{val}:
       +delta = F32.div(F32.sub(U32.to_f32(U32.mod(rng, 21)), 10.0), 10.0)
       Types.Val{F32.add(val, delta)}
-    case Types.Var{}:
+    case Types.Var{idx}:
       mutate_var_help(U32.is_eq(U32.mod(rng, 2), 0), rng)
     case Types.Add{left, right}:
       Types.Add{mutate(left, U32.div(rng, 3)), right}
@@ -54,7 +54,7 @@ def get_subtree_step(+path: U32, is_zero: Bool, expr: Types.Expr) -> Types.Expr:
     case False{}:
       match expr:
         case Types.Val{val}: Types.Val{val}
-        case Types.Var{}: Types.Var{}
+        case Types.Var{idx}: Types.Var{idx}
         case Types.Add{left, right}:
           child = choose_expr(U32.is_eq(U32.mod(path, 2), 0), left, right)
           +next_p = U32.div(path, 2)
@@ -88,7 +88,7 @@ def replace_subtree_step(+path: U32, is_zero: Bool, target: Types.Expr, +replace
     case False{}:
       match target:
         case Types.Val{val}: replacement
-        case Types.Var{}: replacement
+        case Types.Var{idx}: replacement
         case Types.Add{+left, +right}:
           +is_even = U32.is_eq(U32.mod(path, 2), 0)
           child = choose_expr(is_even, left, right)
