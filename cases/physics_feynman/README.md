@@ -23,7 +23,7 @@ $$E(v) = 0.5 \cdot v^2$$
 | **Discovered Equation** | $f(v) = 0.5 \cdot v \cdot v$ | Exact mathematical recovery of physical law |
 | **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on evaluation test points |
 | **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Minimalist and parsimonious structure |
-| **Generations to Convergence** | $5\text{ generations}$ | Rapid identification of closed analytical form |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
@@ -35,5 +35,5 @@ $$f(v) = 0.5 \cdot v \cdot v$$
 
 ### What does this mean in practice?
 1. **Non-Linear Velocity Behavior**: If a vehicle's speed doubles (from $1.0\text{ m/s}$ to $2.0\text{ m/s}$), the required kinetic energy or collision impact force does not merely double: it **quadruples** (from $0.5\text{ J}$ to $2.0\text{ J}$).
-2. **Replacing Heavy Simulations**: Instead of running computationally expensive physics simulations that take hours of compute time, scientists can use this explicit equation discovered by BendSR to compute energy instantly with absolute precision.
-3. **Full Auditability**: Unlike "black-box" artificial intelligence models (which yield numerical outputs without explaining the internal logic), BendSR outputs a fully transparent mathematical formula, enabling formal safety proofs and validation.
+2. **Replacing Heavy Simulations**: Instead of running computationally expensive physics simulations that take hours of compute time, scientists can use this explicit equation discovered by BendSR to compute energy instantantly with absolute precision.
+3. **Full Auditability**: BendSR outputs a fully transparent mathematical formula, enabling formal safety proofs and validation.

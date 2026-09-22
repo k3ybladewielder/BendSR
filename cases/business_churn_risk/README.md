@@ -16,13 +16,14 @@ $$R(s) = 1.5 \cdot s + 2.0$$
 
 ---
 
-## Numerical Results & Governance
+## Numerical Results & Metrics
 
-| Scoring Model | Accuracy ($R^2$) | Auditability & Governance | Legal Compliance (GDPR Article 22) |
-|---|---|---|---|
-| XGBoost Classifier | $98.4\%$ | Low (Feature Importance Only) | Complex / Requires SHAP Approximations |
-| Deep Neural Network | $98.7\%$ | None (Incomprehensible Weights) | Non-Compliant |
-| **BendSR Symbolic Equation** | **$100.0\%$** | **100% Explainable & Transparent** | **Fully Compliant (Formally Proved)** |
+| Metric | Obtained Value | Technical Significance |
+|---|---|---|
+| **Discovered Risk Equation** | $R(s) = 1.5 \cdot s + 2.0$ | Closed-form churn risk equation |
+| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on risk score dataset |
+| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Interpretable linear AST structure |
+| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
 
 ---
 
