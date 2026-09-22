@@ -3,7 +3,7 @@
 ## Problem Overview
 This case study addresses the generation of closed-loop control laws for robotic actuators and industrial automation systems.
 
-The goal of BendSR is to replace heavy neural models with lightweight, closed-form analytical equations:
+The goal of BendSR is to discover lightweight, closed-form analytical control equations:
 $$u(x) = \sin(x) + 0.5 \cdot x$$
 
 ---
