@@ -65,9 +65,9 @@ def generate_bend_code(num_cols, rows):
             features = row[:-1]
             target = row[-1]
             
-        xs_str = "Nil{}"
+        xs_str = "Types.FNil{}"
         for val in reversed(features):
-            xs_str = f"Con{{{val}, {xs_str}}}"
+            xs_str = f"Types.FCon{{{val}, {xs_str}}}"
             
         pt_str = "Types.Pt{" + xs_str + ", " + str(target) + "}"
 

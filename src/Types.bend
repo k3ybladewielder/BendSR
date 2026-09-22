@@ -1,8 +1,13 @@
 import Base
 
-# Ponto de treino dinâmico multivariável (xs = [x0, x1, ...], y = target)
+# Lista não-parametrizada de F32 (Data) para compatibilidade de kind no Bend 2
+type FList is Data:
+  FNil{}
+  FCon{head: F32, tail: FList}
+
+# Ponto de treino dinâmico multivariável (xs = FList, y = target)
 type Point is Data:
-  Pt{xs: List<F32>, y: F32}
+  Pt{xs: FList, y: F32}
 
 # Representação de f(x0, x1, ...) como árvore de expressão
 type Expr is Data:
