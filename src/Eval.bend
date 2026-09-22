@@ -50,17 +50,9 @@ def point_error(+expr: Types.Expr, +vars: +List<F32>, y: F32) -> F32:
 def compute_mae(+expr: Types.Expr, +points: +List<Types.Point>) -> F32:
   match points:
     case Nil{}: 0.0
-    case Con{head, tail}:
+    case Con{head, +tail}:
       match head:
-        case Types.Pt{px, py}:
-          head_err = point_error(expr, Con{px, Nil{}}, py)
-          tail_err = compute_mae!(expr, tail)
-          F32.add(head_err, tail_err)
-        case Types.Pt2{x0, x1, py}:
-          head_err = point_error(expr, Con{x0, Con{x1, Nil{}}}, py)
-          tail_err = compute_mae!(expr, tail)
-          F32.add(head_err, tail_err)
-        case Types.Pt3{x0, x1, x2, py}:
-          head_err = point_error(expr, Con{x0, Con{x1, Con{x2, Nil{}}}}, py)
+        case Types.Pt{xs, py}:
+          head_err = point_error(expr, xs, py)
           tail_err = compute_mae!(expr, tail)
           F32.add(head_err, tail_err)

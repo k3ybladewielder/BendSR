@@ -24,7 +24,7 @@ def parse_file_polars(file_path: str):
 
         cols = df.columns
         num_cols = len(cols)
-        data_rows = df.to_numpy().tolist()
+        data_rows = [list(r) for r in df.rows()]
         return num_cols, data_rows
     except ImportError:
         if ext == '.csv':
@@ -58,17 +58,18 @@ def generate_bend_code(num_cols, rows):
     
     indent = "  "
     for row in rows:
-        if num_cols == 2:
-            # Single variable: Pt{x, y}
-            pt_str = f"Types.Pt{{{row[0]}, {row[1]}}}"
-        elif num_cols == 3:
-            # 2 variables: Pt2{x0, x1, y}
-            pt_str = f"Types.Pt2{{{row[0]}, {row[1]}, {row[2]}}}"
-        elif num_cols >= 4:
-            # 3 variables: Pt3{x0, x1, x2, y}
-            pt_str = f"Types.Pt3{{{row[0]}, {row[1]}, {row[2]}, {row[3]}}}"
+        if num_cols < 2:
+            features = [row[0]]
+            target = 0.0
         else:
-            pt_str = f"Types.Pt{{{row[0]}, 0.0}}"
+            features = row[:-1]
+            target = row[-1]
+            
+        xs_str = "Nil{}"
+        for val in reversed(features):
+            xs_str = f"Con{{{val}, {xs_str}}}"
+            
+        pt_str = "Types.Pt{" + xs_str + ", " + str(target) + "}"
 
         bend_code += f"{indent}Con{{\n{indent}  {pt_str},\n"
         indent += "  "

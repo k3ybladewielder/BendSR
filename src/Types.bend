@@ -1,10 +1,8 @@
 import Base
 
-# Ponto de treino multivariável (Pt = 1 var, Pt2 = 2 vars, Pt3 = 3 vars)
+# Ponto de treino dinâmico multivariável (xs = [x0, x1, ...], y = target)
 type Point is Data:
-  Pt{x: F32, y: F32}
-  Pt2{x0: F32, x1: F32, y: F32}
-  Pt3{x0: F32, x1: F32, x2: F32, y: F32}
+  Pt{xs: List<F32>, y: F32}
 
 # Representação de f(x0, x1, ...) como árvore de expressão
 type Expr is Data:
