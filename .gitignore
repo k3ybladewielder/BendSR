@@ -1,0 +1,3 @@
+# Ignore all dot-directories (hidden folders) except .gitignore itself
+.*/
+!.gitignore
