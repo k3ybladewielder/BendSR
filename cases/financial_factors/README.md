@@ -12,18 +12,17 @@ $$\alpha(x) = x \cdot \cos(x)$$
 
 - [`README.md`](./README.md): Unified document describing the model specification and results.
 - [`dataset.csv`](./dataset.csv): Historical 5-day return $x$ and target future return signal $\alpha$.
-- [`factor_search.bend`](./factor_search.bend): Bend script validating the financial factor expression tree.
+- [`factor_search.bend`](./factor_search.bend): Bend script evaluating target factor expressions against `Dataset.bend`.
+- [`factor_search_discovery.bend`](./factor_search_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Factor Formula** | $\alpha(x) = x \cdot \cos(x)$ | Non-linear alpha factor signal |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on target return signal |
-| **Tree Complexity ($C$)** | $3\text{ AST nodes}$ | Compact financial factor expression |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`factor_search.bend`) | $\alpha(x) = x \cdot \cos(x)$ | $0.000000$ | $3\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`factor_search_discovery.bend`) | `Mul(Var(0), Cos(Var(0)))` | $0.000000$ | $3\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 
