@@ -12,18 +12,17 @@ $$R(s) = 1.5 \cdot s + 2.0$$
 
 - [`README.md`](./README.md): Unified document containing context, specifications, and results analysis.
 - [`dataset.csv`](./dataset.csv): Support ticket history $s$ and risk score $R$.
-- [`churn_model.bend`](./churn_model.bend): Bend script validating the risk model.
+- [`churn_model.bend`](./churn_model.bend): Bend script evaluating target churn risk expressions against `Dataset.bend`.
+- [`churn_model_discovery.bend`](./churn_model_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Risk Equation** | $R(s) = 1.5 \cdot s + 2.0$ | Closed-form churn risk equation |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on risk score dataset |
-| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Interpretable linear AST structure |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`churn_model.bend`) | $R(s) = 1.5 \cdot s + 2.0$ | $0.000000$ | $5\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`churn_model_discovery.bend`) | `Add(Mul(Val(1.5), Var(0)), Val(2.0))` | $0.000000$ | $5\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 

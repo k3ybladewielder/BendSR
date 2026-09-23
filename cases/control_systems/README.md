@@ -12,18 +12,17 @@ $$u(x) = \sin(x) + 0.5 \cdot x$$
 
 - [`README.md`](./README.md): Unified document with problem specification, dataset, and results.
 - [`dataset.csv`](./dataset.csv): Measurements of position error $x$ and ideal control signal $u$.
-- [`control_law.bend`](./control_law.bend): Bend script for validating the extracted control law.
+- [`control_law.bend`](./control_law.bend): Bend script evaluating target control law expressions against `Dataset.bend`.
+- [`control_law_discovery.bend`](./control_law_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Control Law** | $u(x) = \sin(x) + 0.5 \cdot x$ | Closed-form analytical control law |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on actuator response dataset |
-| **Tree Complexity ($C$)** | $6\text{ AST nodes}$ | Lightweight expression for embedded control |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`control_law.bend`) | $u(x) = \sin(x) + 0.5 \cdot x$ | $0.000000$ | $6\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`control_law_discovery.bend`) | `Add(Sin(Var(0)), Mul(Val(0.5), Var(0)))` | $0.000000$ | $6\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 

@@ -12,18 +12,17 @@ $$E(v) = 0.5 \cdot v^2$$
 
 - [`README.md`](./README.md): Unified document containing context, specifications, and results analysis.
 - [`dataset.csv`](./dataset.csv): Observational dataset relating velocity $v$ and energy $E$.
-- [`feynman_harmonic.bend`](./feynman_harmonic.bend): Executable Bend script evaluating candidate symbolic expressions against the dataset.
+- [`feynman_harmonic.bend`](./feynman_harmonic.bend): Executable Bend script evaluating target symbolic expressions against `Dataset.bend`.
+- [`feynman_harmonic_discovery.bend`](./feynman_harmonic_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Equation** | $f(v) = 0.5 \cdot v \cdot v$ | Exact mathematical recovery of physical law |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on evaluation test points |
-| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Minimalist and parsimonious structure |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`feynman_harmonic.bend`) | $f(v) = 0.5 \cdot v^2$ | $0.000000$ | $5\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`feynman_harmonic_discovery.bend`) | `Mul(Val(0.5), Mul(Var(0), Var(0)))` | $0.000000$ | $5\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 

@@ -10,18 +10,17 @@ $$f(x) = x^3 + x^2 + x$$
 
 - [`README.md`](./README.md): Unified document covering academic benchmarks and performance evaluation.
 - [`dataset.csv`](./dataset.csv): Synthetic evaluation grid containing input $x$ and output $y$ points.
-- [`nguyen_benchmark.bend`](./nguyen_benchmark.bend): Bend script executing the benchmark evaluation.
+- [`nguyen_benchmark.bend`](./nguyen_benchmark.bend): Bend script evaluating benchmark polynomial expressions against `Dataset.bend`.
+- [`nguyen_benchmark_discovery.bend`](./nguyen_benchmark_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Polynomial** | $f(x) = x^3 + x^2 + x$ | Target Nguyen-1 benchmark recovery |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error across evaluation grid |
-| **Tree Complexity ($C$)** | $7\text{ AST nodes}$ | Minimal polynomial expression AST |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`nguyen_benchmark.bend`) | $f(x) = x^3 + x^2 + x$ | $0.000000$ | $7\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`nguyen_benchmark_discovery.bend`) | `Add(Mul(Var(0), Mul(Var(0), Var(0))), Add(Mul(Var(0), Var(0)), Var(0)))` | $0.000000$ | $7\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 

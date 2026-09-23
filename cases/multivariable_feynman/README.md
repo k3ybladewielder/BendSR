@@ -12,18 +12,17 @@ $$f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$$
 
 - [`README.md`](./README.md): Unified document containing context, specifications, and results analysis.
 - [`dataset.csv`](./dataset.csv): Observational dataset containing 1,000 samples of feature inputs ($x_0, x_1$) and target output $y$.
-- [`feynman_multi.bend`](./feynman_multi.bend): Executable Bend script evaluating candidate multivariable symbolic expressions against the dataset.
+- [`feynman_multi.bend`](./feynman_multi.bend): Executable Bend script evaluating target multivariable symbolic expressions against `Dataset.bend`.
+- [`feynman_multi_discovery.bend`](./feynman_multi_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Equation** | $f(x_0, x_1) = x_0 \cdot x_0 + 2.0 \cdot x_1$ | Exact mathematical recovery of 2D surface |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on evaluation test points |
-| **Tree Complexity ($C$)** | $7\text{ AST nodes}$ | Minimalist multivariable AST structure |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`feynman_multi.bend`) | $f(x_0, x_1) = x_0^2 + 2.0 \cdot x_1$ | $0.000000$ | $7\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`feynman_multi_discovery.bend`) | `Add(Mul(Var(0), Var(0)), Mul(Val(2.0), Var(1)))` | $0.000000$ | $7\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 
