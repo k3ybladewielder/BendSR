@@ -29,14 +29,22 @@ $$\alpha(x) = x \cdot \cos(x)$$
 ## Discovered Results & Practical Explanation
 
 ### What did the algorithm discover?
-BendSR discovered an intelligent investment rule expressed by the formula:
+BendSR discovered an intelligent, closed-form investment signal expressed by the formula:
 $$\alpha(x) = x \cdot \cos(x)$$
 
-This equation dynamically toggles the trading strategy between **trend-following** and **mean-reversion** based on the magnitude of price momentum.
+This non-linear equation dynamically toggles the trading strategy between **trend-following** (momentum) and **mean-reversion** based on the magnitude of recent price returns $x$.
 
-### What does this mean in practice?
-1. **Dynamic Market Adaptation**:
-   - For moderate price gains ($x$ is small), the factor acts as a momentum buyer.
-   - For overextended price spikes ($x$ is large), the cosine term automatically flips sign, signaling that the asset is overbought and prompting a profit-taking or short position.
-2. **Reduced Transaction Overhead**: Because the factor transitions smoothly between buy and sell signals, it eliminates unnecessary trading churn.
-3. **Risk Management Transparency**: Quantitative fund managers must explain algorithmic strategies to auditors and institutional investors. BendSR's explicit formula eliminates unexpected behavior during market volatility shocks.
+### How does a business/fund use this formula in practice?
+
+1. **Automated Trading Execution & Order Sizing**:
+   - Instead of running complex black-box deep learning models that require continuous GPU inference, the trading engine compiles $\alpha(x) = x \cdot \cos(x)$ directly into low-latency C/C++ or FPGA execution layers.
+   - **Signal Logic**:
+     - When momentum is moderate (e.g., $x = 0.5\text{ rad} \approx 28.6^\circ$), $\cos(0.5) \approx 0.877$, resulting in $\alpha(0.5) \approx +0.438$ (a strong **BUY / LONG** signal).
+     - When momentum becomes overextended (e.g., $x = 2.0\text{ rad} \approx 114.6^\circ$), $\cos(2.0) \approx -0.416$, yielding $\alpha(2.0) \approx -0.832$ (a strong **SELL / SHORT** signal).
+   - The output $\alpha(x)$ directly dictates portfolio position weights: $W_i = \text{clip}(\alpha(x_i), -1.0, +1.0)$.
+
+2. **Analytical Profit Optimization & Threshold Proofs**:
+   - The derivative $\alpha'(x) = \cos(x) - x \cdot \sin(x) = 0$ yields the exact inflection point ($x \approx 0.8603$). Quantitative analysts know precisely at what exact return percentage momentum saturates, allowing them to hardcode safety stop-losses without guess-and-check backtesting.
+
+3. **Risk Management & Regulatory Auditability**:
+   - Institutional investors and regulatory authorities (SEC, FINRA, CVM) require explainability for automated trading algorithms. Because $\alpha(x)$ is a transparent closed-form equation, compliance teams can mathematically prove maximum drawdown bounds and demonstrate zero hidden bias or black-box failures during market volatility shocks.
