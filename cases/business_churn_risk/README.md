@@ -29,9 +29,22 @@ $$R(s) = 1.5 \cdot s + 2.0$$
 ## Discovered Results & Practical Explanation
 
 ### What did the algorithm discover?
-BendSR discovered that customer cancellation risk starts from a base risk score of $2.0$ points and increases linearly by $1.5$ points for every logged support ticket:
+BendSR extracted a closed-form customer churn risk equation relating logged support tickets $s$ to cancellation risk score $R$:
 $$R(s) = 1.5 \cdot s + 2.0$$
 
-### What does this mean in practice?
-1. **Proactive Churn Prevention**: Customer Success teams know precisely when a customer enters the "red zone" of cancellation risk, enabling intervention before contract loss.
-2. **Automated Regulatory Compliance**: Consumer protection and privacy regulations (such as GDPR Article 22) mandate that automated decision-making systems affecting consumers must be explainable. Because the scoring model is an open mathematical formula, it can be audited by regulators without trade secrets or black-box opacity.
+The equation identifies two operational parameters: a **baseline churn risk** ($2.0$ points) present for every active customer, and a **marginal ticket risk multiplier** ($1.5$ points per support ticket logged).
+
+### How does a business use this formula in practice?
+
+1. **Automated Risk Threshold Triggers (Customer Success Operations)**:
+   - Operations teams set explicit mathematical risk boundaries:
+     - **Green Zone ($R < 5.0$)**: Low risk. Customer logged $s < 2$ tickets. Standard automated check-in.
+     - **Yellow Zone ($5.0 \le R < 9.5$)**: Moderate risk. $s \in [2, 5]$ tickets. Triggers an automated satisfaction survey and priority support queue routing.
+     - **Red Zone ($R \ge 9.5$)**: High churn probability. $s \ge 5$ tickets. Triggers an instant notification to account managers to offer dedicated technical support or contract discounts before cancellation.
+
+2. **GDPR / Regulatory Compliance & Black-Box Elimination**:
+   - Regulations like **GDPR Article 22** and credit fairness acts require that automated decisions affecting consumers be explainable.
+   - If a customer is flagged as "high risk" or denied credit renewal, auditors do not accept "the neural network outputted 0.87". With $R(s) = 1.5 \cdot s + 2.0$, the company provides a transparent, auditable formula proving the decision was based strictly on support ticket volume.
+
+3. **Zero-Latency Micro-Service Deployment**:
+   - The formula compiles to 2 arithmetic operations (`MUL` and `ADD`), allowing it to run inside lightweight database triggers, webhooks, or mobile SDKs without calling heavy ML inference servers.

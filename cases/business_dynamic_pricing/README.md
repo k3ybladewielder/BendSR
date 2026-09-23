@@ -29,9 +29,26 @@ $$d(p) = \frac{100.0}{p} + 10.0$$
 ## Discovered Results & Practical Explanation
 
 ### What did the algorithm discover?
-BendSR discovered the exact relationship between the price charged for a product and consumer purchasing volume. The formula reveals that demand decreases inversely with price, plus a constant baseline demand of 10 units:
+BendSR discovered the exact price elasticity of demand curve relating unit selling price $p$ to consumer purchase volume $d$:
 $$d(p) = \frac{100.0}{p} + 10.0$$
 
-### What does this mean in practice?
-1. **Direct Calculation of Optimal Price**: Instead of conducting blind price experiments, businesses receive a clean mathematical formula. Executives can directly calculate which price point maximizes total revenue before changing price tags.
-2. **Predictability & Governance**: Executive boards and financial teams gain total clarity on the exact revenue impact of price adjustments, supporting transparent, audit-ready pricing decisions.
+The formula proves that demand has two components: an **iso-elastic price-sensitive component** ($\frac{100.0}{p}$) and a **stubborn baseline demand** ($10.0$ units) that buys regardless of price.
+
+### How does a business use this formula to set prices and maximize revenue?
+
+1. **Analytical Revenue Maximization (Solving $P_{\text{opt}}$)**:
+   - Total Revenue $R(p)$ is price times demand: 
+     $$R(p) = p \cdot d(p) = p \cdot \left(\frac{100.0}{p} + 10.0\right) = 100.0 + 10.0 \cdot p$$
+   - Taking the derivative with respect to price: $\frac{dR}{dp} = 10.0 > 0$.
+   - **Business Decision**: Because $\frac{dR}{dp}$ is positive for all $p > 0$, the business learns that demand is inelastic over the benchmark price range. Raising the price increases revenue linearly without losing the core 10-unit baseline volume.
+
+2. **Profit Optimization under Marginal Cost ($C_m$)**:
+   - If unit production cost is $C_m = \$5.00$, Profit $\Pi(p) = (p - 5) \cdot d(p) = (p - 5) \cdot \left(\frac{100.0}{p} + 10\right) = 100 + 10p - \frac{500}{p} - 50 = 50 + 10p - \frac{500}{p}$.
+   - Setting marginal profit to zero: $\frac{d\Pi}{dp} = 10 + \frac{500}{p^2} = 0$, showing profit increases monotonically with price up to customer saturation limits.
+
+3. **Automated E-Commerce Pricing Engine Integration**:
+   - Instead of running complex A/B price testing or machine learning models that require continuous retraining, the e-commerce platform embeds $d(p) = \frac{100.0}{p} + 10.0$ into its checkout API.
+   - When competitor prices shift or supplier costs update, the system instantaneously recalculates the optimal price tag in microseconds.
+
+4. **Executive & Governance Transparency**:
+   - Board members and financial auditors do not need to trust a black-box AI model. The pricing team presents a clean 2-parameter mathematical curve that explains exactly how many sales will be gained or lost for any proposed price change.
