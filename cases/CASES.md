@@ -75,7 +75,7 @@ $$ROP(d) = 2.5 \cdot d + 5.0$$
 
 ---
 
-## `cases/` Directory Structure
+## `cases/` Directory Structure & Execution Modes
 
 The `BendSR/cases` directory hosts practical examples, reference datasets, and use-case implementations:
 
@@ -91,6 +91,21 @@ BendSR/cases/
 ├── business_churn_risk/      # Auditable customer churn risk scoring
 └── business_supply_chain/    # Inventory reorder point optimization
 ```
+
+### Execution Modes in Each Case Study
+
+Each case study folder provides two complementary Bend execution scripts:
+
+1. **Direct Validation / Benchmarking (Ground Truth)** (`*_model.bend`, `feynman_harmonic.bend`, etc.):
+   - **Purpose**: Evaluates a target reference expression tree directly against `Dataset.bend`.
+   - **Usage**: Verifies that the Bend parallel evaluator (`Eval.compute_mae!`) and formal proof verification engine work with zero error ($MAE = 0.000000$).
+
+2. **Autonomous Evolutionary Discovery** (`*_discovery.bend`):
+   - **Purpose**: Performs true, unguided symbolic regression discovery directly over `Dataset.bend` using the BendSR evolutionary engine ([`Engine.evolve!`](file:///home/alysson/Área%20de%20Trabalho/Alysson/ds/BendSR/src/Engine.bend#L71)).
+   - **Usage**: Starts from an unbiased, generic initial population of primitive building blocks (`Var{0}`, `Val{1.0}`, `Add`, `Mul`, `Sin`, `Cos`, etc.) and evolves candidates through tournament selection, subtree crossover, and node mutation to autonomously discover the target analytical formula.
+
+> [!NOTE]
+> The performance metrics, error logs, and comparative evaluation between **Direct Validation** and **Autonomous Discovery** are documented in the respective `README.md` file of each case study (e.g., [`physics_feynman/README.md`](./physics_feynman/README.md)).
 
 ---
 
