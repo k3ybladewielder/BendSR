@@ -2,16 +2,16 @@ import Base
 import ./Types.bend as Types
 
 # Busca o valor da variável de índice `idx` na lista de variáveis (vars = [x0, x1, x2, ...])
-def get_var(+idx: U32, +vars: +List<F32>) -> F32:
+def get_var(+idx: U32, +vars: Types.FList) -> F32:
   match idx:
     case 0:
       match vars:
-        case Nil{}: 0.0
-        case Con{head, tail}: head
+        case Types.FNil{}: 0.0
+        case Types.FCon{head, tail}: head
     case +p:
       match vars:
-        case Nil{}: 0.0
-        case Con{head, +tail}: get_var!(p, tail)
+        case Types.FNil{}: 0.0
+        case Types.FCon{head, +tail}: get_var!(p, tail)
 
 # Helper para decisão de divisão por zero (inspeciona o parâmetro is_zero)
 def safe_div_help(is_zero: Bool, num: F32, den: F32) -> F32:
@@ -24,7 +24,7 @@ def safe_div(num: F32, +den: F32) -> F32:
   safe_div_help(F32.is_eq(den, 0.0), num, den)
 
 # Avaliação recursiva de f(x0, x1, ...)
-def eval(+expr: Types.Expr, +vars: +List<F32>) -> F32:
+def eval(+expr: Types.Expr, +vars: Types.FList) -> F32:
   match expr:
     case Types.Val{val}: val
     case Types.Var{idx}: get_var(idx, vars)
@@ -42,7 +42,7 @@ def point_error_help(is_neg: Bool, diff: F32) -> F32:
     case False{}: diff
 
 # Cálculo do erro absoluto em um único ponto multivariável |f(vars) - y|
-def point_error(+expr: Types.Expr, +vars: +List<F32>, y: F32) -> F32:
+def point_error(+expr: Types.Expr, +vars: Types.FList, y: F32) -> F32:
   +diff = F32.sub(eval(expr, vars), y)
   point_error_help(F32.is_lt(diff, 0.0), diff)
 
