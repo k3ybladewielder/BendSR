@@ -12,18 +12,17 @@ $$ROP(d) = 2.5 \cdot d + 5.0$$
 
 - [`README.md`](./README.md): Unified document covering inventory optimization and logistics analysis.
 - [`dataset.csv`](./dataset.csv): Daily demand $d$ and optimal reorder thresholds $ROP$.
-- [`supply_model.bend`](./supply_model.bend): Bend script validating the replenishment policy.
+- [`supply_model.bend`](./supply_model.bend): Bend script evaluating target supply chain expressions against `Dataset.bend`.
+- [`supply_model_discovery.bend`](./supply_model_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Inventory Formula** | $ROP(d) = 2.5 \cdot d + 5.0$ | Closed-form reorder point model |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on demand dataset |
-| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Interpretable linear AST structure |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`supply_model.bend`) | $ROP(d) = 2.5 \cdot d + 5.0$ | $0.000000$ | $5\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`supply_model_discovery.bend`) | `Add(Mul(Val(2.5), Var(0)), Val(5.0))` | $0.000000$ | $5\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 

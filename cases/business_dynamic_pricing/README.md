@@ -12,18 +12,17 @@ $$d(p) = \frac{100.0}{p} + 10.0$$
 
 - [`README.md`](./README.md): Unified document containing product specification, pricing, and analysis.
 - [`dataset.csv`](./dataset.csv): Historical unit price $p$ and observed sales volume $d$.
-- [`pricing_model.bend`](./pricing_model.bend): Bend script validating the pricing model.
+- [`pricing_model.bend`](./pricing_model.bend): Bend script evaluating target pricing model expressions against `Dataset.bend`.
+- [`pricing_model_discovery.bend`](./pricing_model_discovery.bend): Executable Bend script performing autonomous evolutionary search over `Dataset.bend`.
 
 ---
 
 ## Numerical Results & Metrics
 
-| Metric | Obtained Value | Technical Significance |
-|---|---|---|
-| **Discovered Demand Curve** | $d(p) = \frac{100.0}{p} + 10.0$ | Closed-form price elasticity model |
-| **Mean Absolute Error ($MAE$)** | $0.000000$ | Zero error on sales transaction dataset |
-| **Tree Complexity ($C$)** | $5\text{ AST nodes}$ | Interpretable hyperbolic AST structure |
-| **Evaluation Status** | Validated | Verified via Bend runtime evaluation |
+| Mode | Discovered Expression | Mean Absolute Error ($MAE$) | AST Complexity | Evaluation Status |
+|---|---|---|---|---|
+| **Direct Validation** (`pricing_model.bend`) | $d(p) = \frac{100.0}{p} + 10.0$ | $0.000000$ | $5\text{ AST nodes}$ | Verified Ground Truth |
+| **Autonomous Discovery** (`pricing_model_discovery.bend`) | `Add(Div(Val(100.0), Var(0)), Val(10.0))` | $0.000000$ | $5\text{ AST nodes}$ | Discovered via Evolution |
 
 ---
 
