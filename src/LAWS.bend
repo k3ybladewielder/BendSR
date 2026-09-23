@@ -6,5 +6,5 @@ import ./Eval.bend as Eval
 # Garantia de determinismo e imutabilidade na avaliação de expressões
 law safe_tree_evaluation:
   for +expr: Types.Expr
-  for +x: F32
-  {Eval.eval(expr, x) == Eval.eval(expr, x) : F32}
+  for +vars: Types.FList
+  {Eval.eval(expr, vars) == Eval.eval(expr, vars) : F32}

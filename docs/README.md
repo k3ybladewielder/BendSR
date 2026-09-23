@@ -54,10 +54,15 @@ bend -c src/Main.bend
 
 ---
 
-### 3. Verifying Proofs (Proof Checker)
-Bend allows formal verification of tree logic using its built-in proof checking system. To verify the laws defined in the codebase, run:
+### 3. Verifying Formal Proofs
+Bend supports formal verification of mathematical laws and evaluation invariants defined in `LAWS.bend`. To verify the formal proofs defined in the codebase, execute the proof module directly:
+
 ```bash
-bend check src/PROOF.bend
+# Verify core evaluation engine proofs
+bend src/PROOF.bend
+
+# Verify formal proofs for application case studies
+bend cases/multivariable_feynman/PROOF.bend
 ```
 
 ---
