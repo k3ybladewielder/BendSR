@@ -41,7 +41,29 @@ For detailed overviews, datasets, and Bend evaluation scripts, consult [`cases/C
 
 ---
 
-### 2. Running the Project
+### 2. Importing BendSR from Bend Hub
+
+BendSR is published on the official **Bend Hub** registry under the content-addressed package hash:
+
+🔗 **Bend Hub Package**: [`0xb1a81026c64fbbc00a8570155d77383d`](https://hub.bend-lang.com/0xb1a81026c64fbbc00a8570155d77383d)
+
+To use BendSR as a library in your own Bend project, import the package directly in your `.bend` file:
+
+```python
+import 0xb1a81026c64fbbc00a8570155d77383d/BendSR.bend as BendSR
+
+def main() -> IO(Unit):
+  do IO<Unit>:
+    # Access BendSR modules directly
+    ds = BendSR.Types.Nil{}
+    pop = BendSR.Engine.init_population()
+    results = BendSR.Engine.evolve!(5n, pop, ds, 4, 42)
+    IO.print("Symbolic Regression executed via Bend Hub package.")
+```
+
+---
+
+### 3. Running the Project Locally
 Execute the main entry point from the `src/` directory to run the evolutionary algorithm on the default dataset ($y = x^2 + 1$):
 
 ```bash
@@ -54,7 +76,7 @@ bend -c src/Main.bend
 
 ---
 
-### 3. Verifying Formal Proofs
+### 4. Verifying Formal Proofs
 Bend supports formal verification of mathematical laws and evaluation invariants defined in `LAWS.bend`. To verify the formal proofs defined in the codebase, execute the proof module directly:
 
 ```bash
@@ -67,7 +89,7 @@ bend cases/multivariable_feynman/PROOF.bend
 
 ---
 
-### 4. Loading Custom Datasets (CSV, XLSX, Parquet)
+### 5. Loading Custom Datasets (CSV, XLSX, Parquet)
 
 #### Can Bend read tabular formats natively?
 Bend is a pure functional language compiled to HVM (Higher-order Virtual Machine). It does not include native tabular file parsers for `.csv`, `.xlsx` (Excel), or `.parquet` in its core runtime.
