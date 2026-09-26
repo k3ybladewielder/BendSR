@@ -45,12 +45,12 @@ For detailed overviews, datasets, and Bend evaluation scripts, consult [`cases/C
 
 BendSR is published on the official **Bend Hub** registry under the content-addressed package hash:
 
-🔗 **Bend Hub Package**: [`0xb1a81026c64fbbc00a8570155d77383d`](https://hub.bend-lang.com/0xb1a81026c64fbbc00a8570155d77383d)
+🔗 **Bend Hub Package**: [`0x07516e23611e5287ce89bcff661be83f`](https://hub.bend-lang.com/0x07516e23611e5287ce89bcff661be83f)
 
 To use BendSR as a library in your own Bend project, import the package directly in your `.bend` file:
 
 ```python
-import 0xb1a81026c64fbbc00a8570155d77383d/BendSR.bend as BendSR
+import 0x07516e23611e5287ce89bcff661be83f/BendSR.bend as BendSR
 
 def main() -> IO(Unit):
   do IO<Unit>:
