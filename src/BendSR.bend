@@ -10,7 +10,7 @@
 # - Engine: Tournament selection, generation breeding, and evolutionary search loop.
 
 import Base
-import ./Types.bend as Types
-import ./Eval.bend as Eval
-import ./Genetics.bend as Genetics
-import ./Engine.bend as Engine
+import ./Types.bend as T
+import ./Eval.bend as E
+import ./Genetics.bend as G
+import ./Engine.bend as Eng

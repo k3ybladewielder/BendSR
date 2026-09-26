@@ -1,17 +1,17 @@
 import Base
-import ./Types.bend as Types
-import ./Engine.bend as Engine
+import ./Types.bend as T
+import ./Engine.bend as Eng
 
 # Constrói uma população inicial de árvores simples
-def init_population() -> +List<Types.Expr>:
+def init_population() -> +List<T.Expr>:
   Con{ 
-    Types.Add{Types.Var{0}, Types.Val{1.0}}, 
+    T.Add{T.Var{0}, T.Val{1.0}}, 
     Con{ 
-      Types.Mul{Types.Var{0}, Types.Var{0}}, 
+      T.Mul{T.Var{0}, T.Var{0}}, 
       Con{ 
-        Types.Sin{Types.Var{0}}, 
+        T.Sin{T.Var{0}}, 
         Con{ 
-          Types.Val{2.0}, 
+          T.Val{2.0}, 
           Nil{} 
         } 
       } 
@@ -19,25 +19,24 @@ def init_population() -> +List<Types.Expr>:
   }
 
 # Constrói o dataset de treino
-def make_dataset() -> +List<Types.Point>:
+def make_dataset() -> +List<T.Point>:
   Con{ 
-    Types.Pt{Types.FCon{0.0, Types.FNil{}}, 1.0}, 
+    T.Pt{T.FCon{0.0, T.FNil{}}, 1.0}, 
     Con{ 
-      Types.Pt{Types.FCon{1.0, Types.FNil{}}, 2.0}, 
+      T.Pt{T.FCon{1.0, T.FNil{}}, 2.0}, 
       Con{ 
-        Types.Pt{Types.FCon{2.0, Types.FNil{}}, 5.0}, 
+        T.Pt{T.FCon{2.0, T.FNil{}}, 5.0}, 
         Con{ 
-          Types.Pt{Types.FCon{3.0, Types.FNil{}}, 10.0}, 
+          T.Pt{T.FCon{3.0, T.FNil{}}, 10.0}, 
           Nil{} 
         } 
       } 
     } 
   }
 
-def run_evolution(+dataset: +List<Types.Point>, +initial_pop: +List<Types.Expr>) -> IO(Unit):
+def run_evolution(+dataset: +List<T.Point>, +initial_pop: +List<T.Expr>) -> IO(Unit):
+  -results = Eng.evolve!(10n, initial_pop, dataset, 4, 42)
   do IO<Unit>:
-    # Executa 10 gerações paralelas para 4 indivíduos
-    _results = Engine.evolve!(10n, initial_pop, dataset, 4, 42)
     IO.print("Symbolic regression successfully executed.")
 
 def main() -> IO(Unit):
